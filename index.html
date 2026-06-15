@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XcHub - Media & File Drive</title>
+    <style>
+        /* CSS Styles */
+        :root {
+            --primary-color: #6c5ce7;
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Style */
+        .sidebar {
+            width: 260px;
+            background-color: var(--card-bg);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #334155;
+        }
+
+        .brand {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .menu-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            padding: 12px 15px;
+            text-align: left;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            transition: all 0.3s;
+        }
+
+        .menu-btn:hover, .menu-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* Main Content Style */
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        header {
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        header p {
+            color: var(--text-muted);
+        }
+
+        /* Grid System */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        /* Card Style */
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #334155;
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-preview {
+            width: 100%;
+            height: 180px;
+            background-color: #0f172a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .card-preview img, .card-preview video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .icon-placeholder {
+            font-size: 50px;
+        }
+
+        .card-info {
+            padding: 20px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .btn-action {
+            display: inline-block;
+            background-color: #334155;
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: background 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-action:hover {
+            background-color: var(--primary-color);
+        }
+
+        /* Hidden Class for Filter */
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="brand">🚀 XcHub</div>
+        <button class="menu-btn active" onclick="filterContent('all', this)">All Files</button>
+        <button class="menu-btn" onclick="filterContent('image', this)">Photos</button>
+        <button class="menu-btn" onclick="filterContent('video', this)">Videos</button>
+        <button class="menu-btn" onclick="filterContent('pdf', this)">PDF Documents</button>
+        <button class="menu-btn" onclick="filterContent('link', this)">Links</button>
+        <button class="menu-btn" onclick="filterContent('text', this)">Text Files</button>
+    </div>
+
+    <div class="main-content">
+        <header>
+            <h1 id="category-title">All Files</h1>
+            <p>Welcome to XcHub. Access your photos, videos, and documents here.</p>
+        </header>
+
+        <div class="content-grid" id="items-container">
+            
+            <div class="card" data-category="image">
+                <div class="card-preview">
+                    <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=500" alt="Sample Image">
+                </div>
+                <div class="card-info">
+                    <div class="card-title">Nature Wallpaper.jpg</div>
+                    <a href="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=500" target="_blank" class="btn-action">View Full Image</a>
+                </div>
+            </div>
+
+            <div class="card" data-category="video">
+                <div class="card-preview">
+                    <video src="https://www.w3schools.com/html/mov_bbb.mp4" controls></video>
+                </div>
+                <div class="card-info">
+                    <div class="card-title">Big Buck Bunny Trailer.mp4</div>
+                    <button class="btn-action" onclick="alert('Playing Video...')">Play Content</button>
+                </div>
+            </div>
+
+            <div class="card" data-category="pdf">
+                <div class="card-preview">
+                    <div class="icon-placeholder">📕</div>
+                </div>
+                <div class="card-info">
+                    <div class="card-title">Project Report.pdf</div>
+                    <a href="#" class="btn-action">Open PDF</a>
+                </div>
+            </div>
+
+            <div class="card" data-category="link">
+                <div class="card-preview">
+                    <div class="icon-placeholder">🔗</div>
+                </div>
+                <div class="card-info">
+                    <div class="card-title">Google Search Engine</div>
+                    <a href="https://www.google.com" target="_blank" class="btn-action">Visit Link</a>
+                </div>
+            </div>
+
+            <div class="card" data-category="text">
+                <div class="card-preview">
+                    <div class="icon-placeholder">📄</div>
+                </div>
+                <div class="card-info">
+                    <div class="card-title">notes_and_ideas.txt</div>
+                    <button class="btn-action" onclick="viewText()">Read Text</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Category Filter Function
+        function filterContent(category, button) {
+            // Active Button Class එක මාරු කිරීම
+            document.querySelectorAll('.menu-btn').forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+
+            // Header Title එක වෙනස් කිරීම
+            const titles = {
+                all: "All Files",
+                image: "Photos",
+                video: "Videos",
+                pdf: "PDF Documents",
+                link: "Web Links",
+                text: "Text Files"
+            };
+            document.getElementById('category-title').innerText = titles[category];
+
+            // Cards Filter කිරීම
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
+        // Text File එකක් කියවන්න sample function එකක්
+        function viewText() {
+            alert("Text File Content:\n\n- Finish the XcHub UI design\n- Integrate database backend\n- Test responsive layout");
+        }
+    </script>
+</body>
+</html>
