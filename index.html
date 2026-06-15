@@ -1,273 +1,317 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="si">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XcHub - Media & File Drive</title>
+    <title>NUORBIT - Discover Digital Art</title>
     <style>
-        /* CSS Styles */
-        :root {
-            --primary-color: #6c5ce7;
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --text-color: #f8fafc;
-            --text-muted: #94a3b8;
-        }
-
-        * {
+        /* Base Setup */
+        *, *::before, *::after {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            display: flex;
+            background-color: #051318;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            color: #ffffff;
+            overflow-x: hidden;
             min-height: 100vh;
         }
 
-        /* Sidebar Style */
-        .sidebar {
-            width: 260px;
-            background-color: var(--card-bg);
-            padding: 30px 20px;
+        /* Neon Glow Background */
+        .bg-glow {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0, 229, 255, 0.15) 0%, rgba(5, 19, 24, 0) 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            border-right: 1px solid #334155;
+            justify-content: space-between;
         }
 
-        .brand {
-            font-size: 24px;
-            font-weight: bold;
-            color: var(--primary-color);
-            margin-bottom: 40px;
+        /* Header Navigation */
+        header {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 10px;
+            padding: 30px 0;
         }
 
-        .menu-btn {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            padding: 12px 15px;
-            text-align: left;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 8px;
-            margin-bottom: 10px;
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        nav {
+            display: flex;
+            gap: 40px;
+        }
+
+        nav a {
+            color: #a0b0b5;
+            text-decoration: none;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: color 0.3s;
+        }
+
+        nav a:hover, nav a.active {
+            color: #00e5ff;
+        }
+
+        .btn-join {
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 10px 24px;
+            border-radius: 20px;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
             transition: all 0.3s;
         }
 
-        .menu-btn:hover, .menu-btn.active {
-            background-color: var(--primary-color);
-            color: white;
+        .btn-join:hover {
+            background: #ffffff;
+            color: #051318;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
         }
 
-        /* Main Content Style */
-        .main-content {
-            flex: 1;
-            padding: 40px;
-            overflow-y: auto;
+        /* Hero Layout */
+        .hero-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-grow: 1;
+            padding: 40px 0;
         }
 
-        header {
-            margin-bottom: 30px;
+        .hero-left {
+            max-width: 600px;
         }
 
-        header h1 {
-            font-size: 28px;
-            margin-bottom: 5px;
+        .main-title {
+            font-size: 84px;
+            font-weight: 900;
+            letter-spacing: 15px;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            text-transform: uppercase;
         }
 
-        header p {
-            color: var(--text-muted);
+        .sub-text {
+            color: #00e5ff;
+            font-size: 13px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 40px;
         }
 
-        /* Grid System */
-        .content-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
+        .cta-link {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
         }
 
-        /* Card Style */
-        .card {
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid #334155;
-            transition: transform 0.3s;
+        .cta-link::after {
+            content: ' →';
         }
 
-        .card:hover {
-            transform: translateY(-5px);
-        }
-
-        .card-preview {
-            width: 100%;
-            height: 180px;
-            background-color: #0f172a;
+        /* Animated Portal Ring */
+        .hero-right {
+            position: relative;
+            width: 500px;
+            height: 500px;
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
         }
 
-        .card-preview img, .card-preview video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .portal-ring {
+            position: absolute;
+            width: 380px;
+            height: 380px;
+            border-radius: 50%;
+            border: 4px solid #ffffff;
+            box-shadow: 0 0 20px #00e5ff, inset 0 0 20px #00e5ff;
+            animation: pulse-glow 4s infinite alternate;
         }
 
-        .icon-placeholder {
-            font-size: 50px;
+        .avatar-silhouette {
+            width: 240px;
+            height: 360px;
+            background: linear-gradient(to bottom, #102a35, #051318);
+            clip-path: polygon(30% 0%, 70% 0%, 90% 20%, 85% 60%, 75% 100%, 25% 100%, 15% 60%, 10% 20%);
+            z-index: 1;
+            opacity: 0.85;
         }
 
-        .card-info {
-            padding: 20px;
+        /* Footer Dashboard Row */
+        .dashboard-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px 0;
         }
 
-        .card-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+        .stats-group {
+            display: flex;
+            gap: 60px;
         }
 
-        .btn-action {
-            display: inline-block;
-            background-color: #334155;
-            color: white;
-            text-decoration: none;
-            padding: 8px 15px;
-            border-radius: 6px;
-            font-size: 14px;
-            transition: background 0.2s;
-            border: none;
+        .stat-item {
+            position: relative;
+        }
+
+        .stat-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: -30px;
+            top: 20%;
+            height: 60%;
+            width: 1px;
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .stat-label {
+            font-size: 10px;
+            color: #7a8b90;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 4px;
+        }
+
+        .play-video-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
             cursor: pointer;
         }
 
-        .btn-action:hover {
-            background-color: var(--primary-color);
+        .play-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        /* Hidden Class for Filter */
-        .hidden {
-            display: none !important;
+        .play-btn::after {
+            content: '';
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+            border-left: 10px solid #ffffff;
+            margin-left: 4px;
+        }
+
+        .play-text {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .socials a {
+            color: #7a8b90;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 14px;
+        }
+
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 15px rgba(0, 229, 255, 0.4); }
+            100% { box-shadow: 0 0 35px rgba(0, 229, 255, 0.8); }
+        }
+
+        @media (max-width: 1024px) {
+            .hero-section, .dashboard-footer { flex-direction: column; text-align: center; gap: 40px; }
+            .stat-item:not(:last-child)::after { display: none; }
         }
     </style>
 </head>
 <body>
 
-    <div class="sidebar">
-        <div class="brand">🚀 XcHub</div>
-        <button class="menu-btn active" onclick="filterContent('all', this)">All Files</button>
-        <button class="menu-btn" onclick="filterContent('image', this)">Photos</button>
-        <button class="menu-btn" onclick="filterContent('video', this)">Videos</button>
-        <button class="menu-btn" onclick="filterContent('pdf', this)">PDF Documents</button>
-        <button class="menu-btn" onclick="filterContent('link', this)">Links</button>
-        <button class="menu-btn" onclick="filterContent('text', this)">Text Files</button>
-    </div>
+    <div class="bg-glow"></div>
 
-    <div class="main-content">
+    <div class="wrapper">
         <header>
-            <h1 id="category-title">All Files</h1>
-            <p>Welcome to XcHub. Access your photos, videos, and documents here.</p>
+            <div class="logo">NUO</div>
+            <nav>
+                <a href="#" class="active">Home</a>
+                <a href="#">About</a>
+                <a href="#">Token</a>
+                <a href="#">Roadmap</a>
+            </nav>
+            <a href="#" class="btn-join">Join Us</a>
         </header>
 
-        <div class="content-grid" id="items-container">
-            
-            <div class="card" data-category="image">
-                <div class="card-preview">
-                    <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=500" alt="Sample Image">
+        <main class="hero-section">
+            <div class="hero-left">
+                <h1 class="main-title">Nuorbit</h1>
+                <div class="sub-text">Discover Digital Art and Collect NFTs</div>
+                <a href="#" class="cta-link">Let's Orbit</a>
+            </div>
+
+            <div class="hero-right">
+                <div class="portal-ring"></div>
+                <div class="avatar-silhouette"></div>
+            </div>
+        </main>
+
+        <footer class="dashboard-footer">
+            <div class="stats-group">
+                <div class="stat-item">
+                    <div class="stat-value">27K+</div>
+                    <div class="stat-label">Artists</div>
                 </div>
-                <div class="card-info">
-                    <div class="card-title">Nature Wallpaper.jpg</div>
-                    <a href="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=500" target="_blank" class="btn-action">View Full Image</a>
+                <div class="stat-item">
+                    <div class="stat-value">876K+</div>
+                    <div class="stat-label">Artwork</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">20K+</div>
+                    <div class="stat-label">Auction</div>
                 </div>
             </div>
 
-            <div class="card" data-category="video">
-                <div class="card-preview">
-                    <video src="https://www.w3schools.com/html/mov_bbb.mp4" controls></video>
-                </div>
-                <div class="card-info">
-                    <div class="card-title">Big Buck Bunny Trailer.mp4</div>
-                    <button class="btn-action" onclick="alert('Playing Video...')">Play Content</button>
-                </div>
+            <div class="play-video-container">
+                <div class="play-btn"></div>
+                <span class="play-text">Play Video</span>
             </div>
 
-            <div class="card" data-category="pdf">
-                <div class="card-preview">
-                    <div class="icon-placeholder">📕</div>
-                </div>
-                <div class="card-info">
-                    <div class="card-title">Project Report.pdf</div>
-                    <a href="#" class="btn-action">Open PDF</a>
-                </div>
+            <div class="socials">
+                <a href="#">FB</a>
+                <a href="#">IG</a>
+                <a href="#">TW</a>
             </div>
-
-            <div class="card" data-category="link">
-                <div class="card-preview">
-                    <div class="icon-placeholder">🔗</div>
-                </div>
-                <div class="card-info">
-                    <div class="card-title">Google Search Engine</div>
-                    <a href="https://www.google.com" target="_blank" class="btn-action">Visit Link</a>
-                </div>
-            </div>
-
-            <div class="card" data-category="text">
-                <div class="card-preview">
-                    <div class="icon-placeholder">📄</div>
-                </div>
-                <div class="card-info">
-                    <div class="card-title">notes_and_ideas.txt</div>
-                    <button class="btn-action" onclick="viewText()">Read Text</button>
-                </div>
-            </div>
-
-        </div>
+        </footer>
     </div>
 
-    <script>
-        // Category Filter Function
-        function filterContent(category, button) {
-            // Active Button Class එක මාරු කිරීම
-            document.querySelectorAll('.menu-btn').forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-
-            // Header Title එක වෙනස් කිරීම
-            const titles = {
-                all: "All Files",
-                image: "Photos",
-                video: "Videos",
-                pdf: "PDF Documents",
-                link: "Web Links",
-                text: "Text Files"
-            };
-            document.getElementById('category-title').innerText = titles[category];
-
-            // Cards Filter කිරීම
-            const cards = document.querySelectorAll('.card');
-            cards.forEach(card => {
-                if (category === 'all' || card.getAttribute('data-category') === category) {
-                    card.classList.remove('hidden');
-                } else {
-                    card.classList.add('hidden');
-                }
-            });
-        }
-
-        // Text File එකක් කියවන්න sample function එකක්
-        function viewText() {
-            alert("Text File Content:\n\n- Finish the XcHub UI design\n- Integrate database backend\n- Test responsive layout");
-        }
-    </script>
 </body>
 </html>
